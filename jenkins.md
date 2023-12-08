@@ -1,42 +1,9 @@
 
-### About Nginx
+### About Jenkins
 
-#### Install nginx
-
-```
-$ sudo apt update
-$ sudo apt install nginx
-```
-
-Verify nginx is running
-
-```
-$ sudo systemctl status nginx
-  ● nginx.service - A high performance web server and a reverse proxy server
-       Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
-       Active: active (running) since Sun 2023-08-20 01:04:22 UTC; 53s ago
-         Docs: man:nginx(8)
-      Process: 28210 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SU\
-    CCESS)                                                                                                               
-      Process: 28211 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
-     Main PID: 28312 (nginx)
-        Tasks: 13 (limit: 76969)
-       Memory: 13.1M
-          CPU: 105ms
-       CGroup: /system.slice/nginx.service
-               ├─28312 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
-               ├─28314 "nginx: worker process" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" ""
-               ...
-```
-
-
-
-
-#### Jenkins
-
-* Jenkins is a self-contained, The leading open source automation server
-* Jenkins provides hundreds of plugins to support building, deploying and automating any project.
-*  It helps speed up the software delivery pipeline using the continuous integration, continuous delivery, and continuous deployment methodology
+* Jenkins is a self-contained, leading open source automation server
+* Jenkins provides hundreds of plugins to support building, deploying, and automating any project.
+* It helps speed up the software delivery pipeline using the continuous integration, continuous delivery, and continuous deployment methodology
 
 
 #### install Debian/Ubuntu
