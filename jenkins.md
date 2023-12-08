@@ -1,0 +1,126 @@
+
+### About Nginx
+
+#### Install nginx
+
+```
+$ sudo apt update
+$ sudo apt install nginx
+```
+
+Verify nginx is running
+
+```
+$ sudo systemctl status nginx
+  ● nginx.service - A high performance web server and a reverse proxy server
+       Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+       Active: active (running) since Sun 2023-08-20 01:04:22 UTC; 53s ago
+         Docs: man:nginx(8)
+      Process: 28210 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=0/SU\
+    CCESS)                                                                                                               
+      Process: 28211 ExecStart=/usr/sbin/nginx -g daemon on; master_process on; (code=exited, status=0/SUCCESS)
+     Main PID: 28312 (nginx)
+        Tasks: 13 (limit: 76969)
+       Memory: 13.1M
+          CPU: 105ms
+       CGroup: /system.slice/nginx.service
+               ├─28312 "nginx: master process /usr/sbin/nginx -g daemon on; master_process on;"
+               ├─28314 "nginx: worker process" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" "" ""
+               ...
+```
+
+
+
+
+#### Jenkins
+
+* Jenkins is a self-contained, The leading open source automation server
+* Jenkins provides hundreds of plugins to support building, deploying and automating any project.
+*  It helps speed up the software delivery pipeline using the continuous integration, continuous delivery, and continuous deployment methodology
+
+
+#### install Debian/Ubuntu
+
+On Debian and Debian-based distributions like Ubuntu you can install Jenkins through apt
+
+```
+
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+
+
+
+--2023-12-07 16:34:54--  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+Resolving pkg.jenkins.io (pkg.jenkins.io)... 199.232.46.133, 2a04:4e42:48::645
+Connecting to pkg.jenkins.io (pkg.jenkins.io)|199.232.46.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 3175 (3.1K) [application/pgp-keys]
+Saving to: ‘/usr/share/keyrings/jenkins-keyring.asc’
+
+/usr/share/keyrings/jenkins-keyring.asc    100%[========================================================================================>]   3.10K  --.-KB/s    in 0s
+
+2023-12-07 16:34:54 (35.6 MB/s) - ‘/usr/share/keyrings/jenkins-keyring.asc’ saved [3175/3175]
+
+```
+
+```
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+```
+
+
+
+```
+sudo apt-get update
+sudo apt-get install jenkins
+```
+
+#### Remove Jenkins Completely From Debian/Ubuntu
+
+**Stop the Jenkins Service**
+
+```
+sudo systemctl stop jenkins
+```
+
+Remove Jenkins Packages
+
+```
+sudo apt-get purge jenkins
+```
+
+Remove Jenkins Repository
+
+```
+sudo rm /etc/apt/sources.list.d/jenkins.list
+```
+
+Clean Up Additional Directories
+
+```
+sudo rm -rf /var/lib/jenkins/
+sudo rm -rf /var/cache/jenkins
+```
+
+Update the Package Database
+
+```
+sudo apt-get update
+```
+
+
+```
+```
+
+
+```
+```
+
+
+```
+```
+
+
+```
+```
