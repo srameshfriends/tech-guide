@@ -130,28 +130,6 @@ curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --
 ```
 Download the public signing key for the Kubernetes package repositories. The same signing key is used for all repositories so you can disregard the version in the URL:
 
-
-
-```
-
-```
-
-
-
-```
-
-```
-
-
-
-
-```
-
-```
-
-
-
-
 ## Uninstall Minikube on Ubuntu
 Minikube is a popular tool that allows developers to run Kubernetes clusters locally on their machines.
 
@@ -189,7 +167,41 @@ sudo rm -rf /usr/local/bin/kubectl
 
 ```
 
+## Kubernate Command
 
+1. Check the minikube status
+
+```
+minikube status
+```
+
+2. Lets the minikube on Linux by running below command.
+
+```
+minikube start
+```
+
+3. Pause Kubernetes without impacting deployed applications:
+
+```
+minikube pause
+```
+4. Unpause a paused instance:
+
+```
+minikube unpause
+```
+5. Get list of addons on Kubernetes
+
+
+```
+minikube addons list
+
+```
+
+#### Set up Ingress on Minikube with the NGINX Ingress Controller
+
+An Ingress is an API object that defines rules which allow external access to services in a cluster. An Ingress controller fulfills the rules set in the Ingress.
 
 ```
 

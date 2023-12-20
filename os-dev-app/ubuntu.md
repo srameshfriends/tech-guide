@@ -274,3 +274,20 @@ sudo apt install ubuntu-dbgsym-keyring
 
 ```
 
+#### Apache Maven on Ubuntu (22.04)
+
+Apache Maven is an open-source utility that enables you to automate the development procedure of Java projects. It can also be utilized for Ruby, C#, and other programming languages.
+
+Installing Apache Maven on Ubuntu 22.04 using apt
+
+```
+sudo apt update
+sudo apt install maven -y
+```
+
+Check Apache Maven version
+
+```
+mvn -version
+```
+
