@@ -291,3 +291,75 @@ Check Apache Maven version
 mvn -version
 ```
 
+#### Ubuntu commands
+
+How to know what program is listening on a given port?
+
+```
+lsof -i :8000
+```
+
+Kill the process by id
+
+```
+kill -9 1317
+```
+
+
+## Generate a CSR for Nginx Using OpenSSL
+
+1. Log in to your server via your terminal client (ssh).
+2. Open the CSR in a text editor and copy all of the text.
+3. Paste the full CSR into the SSL request area in your account.
+
+```
+openssl req -new -newkey rsa:2048 -nodes -keyout srimalar.key -out srimalar.csr
+```
+
+##### SSL Certificate On Godaddy
+
+You can generate a Certificate Signing Request (CSR) from your server by using the server's software. Your CSR contains
+a public key that matches the private key generated at the same time.
+
+#### SSL Certificates
+
+NGINX: Install a certificate
+After your certificate request is approved, you can download your SSL and intermediate certificates from the SSL application. For more information see Downloading Your SSL Certificate. These files must be installed on your Web server.
+
+You can also download the intermediate certificate bundle from the repository.
+
+* To Install SSL and Intermediate Certificates
+* Copy your SSL certificate file and the certificate bundle file to your Nginx server.
+* You should already have a key file on the server from when you generated your certificate request.
+* Edit your Nginx configuration to reference these files. The exact configuration file you edit depends on your version of Nginx, your OS platform, or the method used to install Nginx.
+* Your SSL Certificate is installed. If you have problems, please see Test your SSL's configuration to help diagnose issues.
+
+#### SSL certificate chains
+
+```
+cat srimalar.com.crt bundle.crt > srimalar.com.chained.crt
+
+
+```
+
+```
+
+server {
+        listen 443 ssl;
+        server_name app.srimalar.com;
+
+        ssl_certificate /etc/nginx/ssl/srimalar.crt;
+        ssl_certificate_key /etc/nginx/ssl/srimalar.key;
+
+        location / {
+            proxy_set_header X-Forwarded-Host $host;
+            proxy_set_header X-Forwarded-Server $host;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Forwarded-Org 'app';
+            proxy_pass http://localhost:8085/;
+        }
+}
+```
+
+For more information on how to configure your Nginx server, see http://nginx.org/en/docs/http/configuring_https_servers.html#chains.

@@ -9,20 +9,20 @@
 
 - It is called a Hardware level Virtualization.
 - It is created using the Hypervisor
-- It share the underlying hardware configurations.
+- It shares the underlying hardware configurations.
 - It is used to run the Operating System.
-- It consume more space
+- It consumes more space
 - It requires considerable amount of time to start up.
 
 #### Containers
 
 - It is called a OS level Virtualization.
 - It is created using the Container Engine
-- It share the underlying properties of OS.(Kernel - Control Groups & Namespaces)
+- It shares the underlying properties of OS.(Kernel - Control Groups & Namespaces)
 - It is used to run the Application / Task. NOT Operating System.
-- It doesnt consume more space
+- It doesn't consume more space
 - It is faster in execution.
-- If there is not Task / Application to Execute, the Containers will immediately go to exit state & Release the resources.
+- If there is no Task / Application to Execute, the Containers will immediately go to exit state & Release the resources.
 
 #### Containerization
 
@@ -31,21 +31,111 @@
 Using Containers we can reduce the number of Virtual Machines.
 
 
-**Jenkins_Master**: Used to create and manage and schedule the jobs.
+# Docker Engine overview
 
-**Jenkins_Slave1**: VM - Used to Build the (Java)Application Src_Code.
+Docker Engine is an open source containerization technology for building and containerizing your applications. Docker Engine acts as a client-server application with:
 
-**Jenkins_Slave2**: VM - Used to Build the (Python)Application Src_Code.
+1. A server with a long-running daemon process dockerd.
+2. APIs which specify interfaces that programs can use to talk to and instruct the Docker daemon.
+3. A command line interface (CLI) client docker.
 
-**Jenkins_Slave3**: VM - Used to Build the (Angular)Application Src_Code.
+The CLI uses Docker APIs to control or interact with the Docker daemon through scripting or direct CLI commands. 
+The daemon creates and manage Docker objects, such as **images, containers, networks, and volumes**.
 
-**Jenkins_Master 	(VM)** 
-    Jenkins_Slave1 (VM): Install Container Engine 
-		C1 (Java)Application Src_Code.
-		C2 (Python)Application Src_Code.
-		C3 (Angular)Application Src_Code.
+# Docker Volumes
 
-## Docker commands
+By default all files created inside a container are stored on a writable container layer. This means that:
+
+* The data doesn't persist when that container no longer exists, and it can be difficult to get the data out of the container if another process needs it.
+* A container's writable layer is tightly coupled to the host machine where the container is running. You can't easily move the data somewhere else.
+* Writing into a container's writable layer requires a storage driver to manage the filesystem. The storage driver provides a union filesystem, using the Linux kernel. This extra abstraction reduces performance as compared to using data volumes, which write directly to the host filesystem.
+
+![Cache Topology](img/docker-types-of-mounts.webp)
+
+
+![Cache Topology](img/docker-container.webp)
+
+
+Volumes: Created and managed by Docker. You can create a volume explicitly using the following command
+
+```
+docker volume create
+```
+
+A given volume can be mounted into multiple containers simultaneously. When no running container is using a volume, the volume is still available to Docker and is not removed automatically. You can remove unused volumes using
+
+```
+docker volume prune
+```
+
+### Docker Bind Mounts
+
+A Docker bind mount is a high-performance connection from the container to a directory on the host machine. It allows the host to share its own file system with the container, which can be made read-only or read-write.
+
+
+### Docker Volumes
+
+A bind mount uses the host file system, but Docker volumes are native to Docker. The data is kept somewhere on storage attached to the host – often the local filesystem. The volume itself has a lifecycle that’s longer than the container’s, allowing it to persist until no longer needed. Volumes can be shared between containers.
+
+In some cases, the volume is in a form that is not usable by the host directly.
+
+### Managing Volumes
+
+Docker volumes are a way of storing data that can be shared across multiple containers. They are similar to files or directories on a file system, but they can be managed by Docker and can be easily shared among different containers. Docker volumes are used to store data that needs to persist between container restarts or that needs to be shared among different containers.
+
+Docker volumes come in different types and can be managed using different methods. Some of the most commonly used Docker volume types are:
+
+**Named volumes**: Named volumes are created and managed by Docker. They are stored in a directory on the host machine and can be easily accessed by multiple containers. Named volumes are created using the docker volume create command.
+
+**Host volumes**: Host volumes are directories or files on the host machine that are mounted into a container. Host volumes are created using the docker run command with the -v flag.
+
+**Anonymous volumes**: Anonymous volumes are created by Docker and are attached to a container when it is created. They are not named and cannot be reused. Anonymous volumes are created using the -v flag in the docker run command.
+
+**Docker CLI Commands for Managing Volumes** options should be used
+
+
+```
+docker volume --help
+docker volume [commnad] 
+```
+
+1. -v or –volume: It has three fields separated by (:).
+
+2. The first field is the name of the volume and the second field is the path of the file or folder in the container where we are going to mount the volume, and the third one is optional that specify the access mode of the mounted file. We must follow the field order correctly in this option.
+
+
+```
+-v my-vol:/etc/:ro
+```
+
+In the above example, ‘my-vol’ is the name of the volume, and ‘/etc/’ is the folder inside the container, and access mode is read-only.
+
+Lists all the volumes that are currently available on the host machine.
+
+```
+docker volume ls
+```
+
+Removes a named volume.
+
+```
+docker volume rm 
+```
+
+Provides detailed information about a named volume.
+
+```
+docker volume inspect
+```
+
+Mounts a named volume or a host directory or file into a container.
+
+```
+docker run --mount
+```
+
+
+# Docker same basic commands
 
 
 ```
@@ -121,8 +211,6 @@ And with exec we’ve entered a postgres-docker image in detached mode -it and s
 docker exec -it postgres-docker bash
 ```
 
-
-
 **Mounting a Volume**
 
 This command mounts a host directory ‘/host/directory’ to the container directory ‘/container/directory’ and runs a new container from the ‘busybox’ image. The ‘ls’ command is executed to list the contents of the container directory.
@@ -187,79 +275,4 @@ Remove All Stopped Containers
 docker container rm $(docker container ls -aq)
 ```
 
-### Docker Volumes
-
-A docker container runs the software stack defined in an image. Images are made of a set of read-only layers that work on a file system called the Union File System. When we start a new container, Docker adds a read-write layer on the top of the image layers allowing the container to run as though on a standard Linux file system.
-
-
-So, any file change inside the container creates a working copy in the read-write layer. However, when the container is stopped or deleted, that read-write layer is lost.
-
-
-![Cache Topology](img/docker-container.webp)
-
-
-### Docker Bind Mounts
-
-A Docker bind mount is a high-performance connection from the container to a directory on the host machine. It allows the host to share its own file system with the container, which can be made read-only or read-write.
-
-
-### Docker Volumes
-
-A bind mount uses the host file system, but Docker volumes are native to Docker. The data is kept somewhere on storage attached to the host – often the local filesystem. The volume itself has a lifecycle that’s longer than the container’s, allowing it to persist until no longer needed. Volumes can be shared between containers.
-
-In some cases, the volume is in a form that is not usable by the host directly.
-
-### Managing Volumes
-
-Docker volumes are a way of storing data that can be shared across multiple containers. They are similar to files or directories on a file system, but they can be managed by Docker and can be easily shared among different containers. Docker volumes are used to store data that needs to persist between container restarts or that needs to be shared among different containers.
-
-Docker volumes come in different types and can be managed using different methods. Some of the most commonly used Docker volume types are:
-
-**Named volumes**: Named volumes are created and managed by Docker. They are stored in a directory on the host machine and can be easily accessed by multiple containers. Named volumes are created using the docker volume create command.
-
-**Host volumes**: Host volumes are directories or files on the host machine that are mounted into a container. Host volumes are created using the docker run command with the -v flag.
-
-**Anonymous volumes**: Anonymous volumes are created by Docker and are attached to a container when it is created. They are not named and cannot be reused. Anonymous volumes are created using the -v flag in the docker run command.
-
-**Docker CLI Commands for Managing Volumes** options should be used
-
-
-```
-docker volume --help
-docker volume [commnad] 
-```
-
-1. -v or –volume: It has three fields separated by (:). 
-
-2. The first field is the name of the volume and the second field is the path of the file or folder in the container where we are going to mount the volume, and the third one is optional that specify the access mode of the mounted file. We must follow the field order correctly in this option.
-
-
-```
--v my-vol:/etc/:ro
-```
-
-In the above example, ‘my-vol’ is the name of the volume, and ‘/etc/’ is the folder inside the container, and access mode is read-only.
-
-Lists all the volumes that are currently available on the host machine.
-
-```
-docker volume ls
-```
-
-Removes a named volume.
-
-```
-docker volume rm 
-```
-
-Provides detailed information about a named volume.
-
-```
-docker volume inspect
-```
-
-Mounts a named volume or a host directory or file into a container.
-
-```
-docker run --mount
-```
+# Docker Network
