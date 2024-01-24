@@ -363,3 +363,9 @@ server {
 ```
 
 For more information on how to configure your Nginx server, see http://nginx.org/en/docs/http/configuring_https_servers.html#chains.
+
+
+#### How to access another user's folder from another user account
+
+In most modern Linux systems, each user have their own group corresponding to their username
+

@@ -104,3 +104,41 @@ https://www.knowledgehut.com/blog/web-development/react-18-new-features
 Thanks Blog Author
 Bala Krishna Ragala
 Sep, 2023
+
+
+#### React fetch and state management
+
+
+```
+import React, { useState, useEffect } from 'react';
+
+const MyComponent = () => {
+  const [data1, setData1] = useState(null);
+  const [data2, setData2] = useState(null);
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/data1').then((response) => response.json()),
+      fetch('/api/data2').then((response) => response.json())
+    ])
+      .then(([data1, data2]) => {
+        setData1(data1);
+        setData2(data2);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+  return data1 && data2 ? (
+    <div>
+      {data1}
+      {data2}
+    </div>
+  ) : (
+    <div>Loading...</div>
+  );
+};
+
+export default MyComponent;
+```
