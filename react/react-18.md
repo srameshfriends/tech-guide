@@ -142,3 +142,62 @@ const MyComponent = () => {
 
 export default MyComponent;
 ```
+
+### React Hooks
+
+- Only Call Hooks at the Top Level
+- Only Call Hooks from React Functions
+- ESLint Plugin - We released an ESLint plugin called eslint-plugin-react-hooks that enforces these two rules. You can add this plugin to your project if you’d like to try it:
+
+```
+import React, { useState } from 'react';
+
+function MyComponent() {
+    const [count, setCount] = useState(0);
+
+    function handleClick() {
+        setCount(count + 1);
+    }
+
+    return (
+        <div>
+            <p>Count: {count}</p>
+            <button onClick={handleClick}>Increment</button>
+        </div>
+    );
+}
+
+export default MyComponent;
+```
+
+### Use custom states in Class Component
+
+suppose you don’t want to change your component’s syntax. You can decide to use state and setState instead of useState Hook:
+
+```
+import React from 'react';
+
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: 0 };
+  }
+
+  handleIncrement = () => {
+    this.setState({ count: this.state.count + 1 });
+  }
+
+  render() {
+    return (
+      <div>
+        <p>Count: {this.state.count}</p>
+        <button onClick={this.handleIncrement}>Increment</button>
+      </div>
+    );
+  }
+}
+
+export default MyComponent;
+```
+
+
