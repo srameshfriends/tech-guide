@@ -123,3 +123,5 @@ Gangs of Four design patterns lay the foundation of core design patterns in prog
 ---
 
 *Thanks for learning with the DigitalOcean Community*
+
+
