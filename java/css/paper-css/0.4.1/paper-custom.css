@@ -1,0 +1,30 @@
+
+.a4-15-header {
+    position: absolute;
+    top: 15mm;
+    height: 30mm;
+}
+
+.a4-15-footer {
+    position: absolute;
+    bottom: 15mm;
+    height: 30mm;
+}
+
+.a4-15-content {
+    margin-top: 18mm;
+    border-top: solid 1px #f2e7c3;
+}
+
+.a4-row-15 {
+    width: 180mm;
+}
+
+.a4-left, .a4-right {
+    display: inline-block;
+}
+
+.a4-right {
+    text-align: right;
+}
+

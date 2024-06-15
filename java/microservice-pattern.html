@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Microservice Pattern</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="css/paper-css/0.4.1/paper.css">
+    <link rel="stylesheet" href="css/paper-css/0.4.1/paper-custom.css">
+    <link rel="stylesheet" href="css/doc.css">
+    <script src="js/doc.js"></script>
+    <style>@page {
+        size: A4
+    }</style>
+</head>
+<body class="A4">
+
+<section>
+    <button id="doc-print-action" class="right-menu print-preview">Print Preview</button>
+</section>
+
+<div id="doc-print-content" class="doc-content">
+
+    <!-- PAGE 1 -->
+    <section class="sheet padding-10mm">
+        <div class="a4-15-header" data-url="header.html">
+        </div>
+        <div class="a4-15-content">
+
+            <div class="w100">
+                <p><span class="title me-2">Microservices design patterns</span></p>
+
+
+
+                <ul class="ul-none">
+                    <li>Database per service pattern</li>
+                    <li>API gateway pattern</li>
+                    <li>Asynchronous messaging</li>
+                    <li>Event sourcing</li>
+                    <li>Saga pattern <small>(Choreography / Orchestration)</small></li>
+                    <li>Command query responsibility segregation (CQRS)</li>
+                    <li>Circuit breaker design pattern<small>(Open/Closed/Half-open)</small></li>
+                    <li>Aggregator design pattern</li>
+                    <li>Strangler</li>
+                    <li>Decomposition patterns
+                        <br>
+                        <small>Decomposition by business capability</small>
+                        <br>
+                        <small>Decomposition by subdomain</small>
+                        <br>
+                        <small>Decomposition by transaction</small>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="w100">
+                <h2>Database per service pattern</h2>
+                <p>A database dedicated to one service can’t be accessed by other services. This is one of the reasons that makes it much easier to scale and understand from a whole end-to-end business aspect.</p>
+                <strong>Benefits</strong>
+                <p>Helps ensure that the services are loosely coupled. Changes to one service’s database does not impact any other services</p>
+                <p>Each service can use the type of database that is best suited to its needs. </p>
+                <strong>Drawbacks</strong>
+                <p>Implementing business transactions that span multiple services is not straightforward. Distributed transactions are best avoided because of the CAP theorem</p>
+                <p>Implementing queries that join data that is now in multiple databases is challenging</p>
+            </div>
+
+        </div>
+        <div class="a4-15-footer" data-url="footer.html">
+        </div>
+    </section>
+    <!-- PAGE END -->
+
+
+    <!-- PAGE 1 -->
+    <section class="sheet padding-10mm">
+        <div class="a4-15-header" data-url="header.html">
+        </div>
+        <div class="a4-15-content">
+            <div class="w100">
+                <h2>API gateway pattern</h2>
+                <p>In a microservices architecture, each microservice exposes a set of (typically) fine-grained endpoints. This fact can impact the client-to-microservice communication</p>
+
+                <p><img src="img/direct-client-to-microservice-communication.png" class="p1-2" style="width: 90%"></p>
+
+                <strong>Benefits</strong>
+                <p> The primary way the pattern improves security is by reducing the attack surface area.</p>
+                <p>The API endpoints aren’t directly exposed to clients and authorization and SSL can be efficiently implemented.</p>
+                <strong>Drawbacks</strong>
+                <p>An API Gateway requires additional development cost and future maintenance if it includes custom logic and data aggregation.</p>
+            </div>
+
+        </div>
+        <div class="a4-15-footer" data-url="footer.html">
+        </div>
+    </section>
+    <!-- PAGE END -->
+
+
+    <!-- PAGE 1 -->
+    <section class="sheet padding-10mm">
+        <div class="a4-15-header" data-url="header.html">
+        </div>
+        <div class="a4-15-content">
+            <div class="w100">
+                <h2>Asynchronous messaging-Based Communication</h2>
+                <p>If a service does not need to wait for a response and can continue running its code post-failure, asynchronous messaging can be used. Using this design pattern, microservices can communicate in a way that’s fast and responsive. </p>
+
+                <p>
+                <img src="img/async-communication.webp" class="p1-2" style="width: 90%">
+                </p>
+
+                <p>So we should understand that isolation is important between microservices, we should isolate services as much as possible. Since microservices are distributed system running on multiple processes, services required to interact with each other with using an inter-process communication protocols like sync HTTP, gRPC or async AMQP protocols.</p>
+
+                <strong>Benefits</strong>
+                <p>An asynchronous message listener can delegate a request to a different node.</p>
+
+                <strong>Drawbacks</strong>
+                <p>Debugging asynchronous applications code can be tricky because the execution is not sequential. Bugs can be subtle and hard to reproduce.</p>
+            </div>
+
+        </div>
+        <div class="a4-15-footer" data-url="footer.html">
+        </div>
+    </section>
+    <!-- PAGE END -->
+
+    <!-- PAGE 1 -->
+    <section class="sheet padding-10mm">
+        <div class="a4-15-header" data-url="header.html">
+        </div>
+        <div class="a4-15-content">
+            <div class="w100">
+                <h2>Event sourcing</h2>
+                <p>Instead of storing just the current state of the data in a domain, use an append-only store to record the full series of actions taken on that data. The store acts as the system of record and can be used to materialize the domain objects.
+                    It can also provide consistency for transactional data, and maintain full audit trails and history that can enable compensating actions.
+                </p>
+
+
+                <p><img src="img/event-sourcing-overview.png" class="p1-2" style="width: 80%"></p>
+
+                <strong>Benefits</strong>
+                <p>This can simplify tasks in complex domains</p>
+                <p>It can also provide consistency for transactional data, and maintain full audit trails and history that can enable compensating actions.</p>
+                <strong>Drawbacks</strong>
+                <p>The CRUD approach has some limitations:CRUD systems perform update operations directly against a data store. These operations can slow down performance and responsiveness and can limit scalability, due to the processing overhead it requires.</p>
+                <p>In a collaborative domain with many concurrent users, data update conflicts are more likely because the update operations take place on a single item of data.</p>
+            </div>
+
+        </div>
+        <div class="a4-15-footer" data-url="footer.html">
+        </div>
+    </section>
+    <!-- PAGE END -->
+
+
+
+    <!-- PAGE 1 -->
+    <section class="sheet padding-10mm">
+        <div class="a4-15-header" data-url="header.html">
+        </div>
+        <div class="a4-15-content">
+            <div class="w100">
+                <h2>Saga pattern</h2>
+
+                <p>A saga is a series of local transactions. In microservices applications, a saga pattern can help maintain data consistency during distributed transactions.</p>
+
+                <p>The saga pattern is an alternative solution to other design patterns that allows for multiple transactions by giving rollback opportunities.</p>
+
+                <p><img src="img/saga-pattern.webp" class="p1-2" style="width: 80%"></p>
+
+                <p>A common scenario is an e-commerce application that allows customers to purchase products using credit. Data may be stored in two different databases: One for orders and one for customers. The purchase amount can’t exceed the credit limit. To implement the Saga pattern, developers can choose between two common approaches.</p>
+
+                <h3>Choreography-based Saga</h3>
+                <p>In a  choreography-based saga approach, each microservice would publish a domain event after executing a local transaction that would trigger the next transaction in another microservice. </p>
+
+
+            </div>
+
+        </div>
+        <div class="a4-15-footer" data-url="footer.html">
+        </div>
+    </section>
+    <!-- PAGE END -->
+
+
+    <!-- PAGE 1 -->
+    <section class="sheet padding-10mm">
+        <div class="a4-15-header" data-url="header.html">
+        </div>
+        <div class="a4-15-content">
+            <div class="w100">
+
+                <p><img src="img/choreography.webp" class="p1-2" style="width: 80%"></p>
+
+                <h3>Orchestration-based Saga</h3>
+
+                <p>In an orchestration-based saga approach, we have a saga orchestrator that manages all the transactions and directs the participating microservices to execute their local transactions.</p>
+
+                <p><img src="img/orchestration.webp" class="p1-2" style="width: 80%"></p>
+
+            </div>
+
+        </div>
+        <div class="a4-15-footer" data-url="footer.html">
+        </div>
+    </section>
+    <!-- PAGE END -->
+
+
+
+    <!-- PAGE 1 -->
+    <section class="sheet padding-10mm">
+        <div class="a4-15-header" data-url="header.html">
+        </div>
+        <div class="a4-15-content">
+
+                <div class="w100">
+                    <strong>Benefits</strong>
+                    <p>The Saga pattern is efficient for handling distributed transactions in applications with multiple services.</p>
+
+                    <p>The saga pattern, businesses can ensure data consistency and reliable transaction execution, even in the case of failures</p>
+
+                    <strong>Drawbacks</strong>
+                    <p>Workflow can become confusing when adding new steps, as it's difficult to track which saga participants listen to which commands.</p>
+
+                    <p>There's a risk of cyclic dependency between saga participants because they have to consume each other's commands.</p>
+                </div>
+
+        </div>
+        <div class="a4-15-footer" data-url="footer.html">
+        </div>
+    </section>
+    <!-- PAGE END -->
+
+
+    <!-- PAGE 1 -->
+    <section class="sheet padding-10mm">
+        <div class="a4-15-header" data-url="header.html">
+        </div>
+        <div class="a4-15-content">
+
+            <div class="w100">
+                <h2>Command query responsibility segregation (CQRS)</h2>
+
+                <p>The way this works is that CQRS is responsible for either changing the state of the entity or returning the result in a transaction. Multiple views can be provided for query purposes, and the read side of the system can be optimized separately from the write side. </p>
+
+                <p> This shift allows for a reduction in the complexity of all apps by separately querying models and commands so:</p>
+
+                <p>The write side of the model handles persistence events and acts as a data source for the read side</p>
+
+                <p>The read side of the model generates a projections of the data, which are highly denormalized views</p>
+
+                <p><img src="img/cqrs-pattern.webp" class="p1-2" style="width: 80%"></p>
+
+                <strong>Benefits</strong>
+                <p>Read activity tends to be more frequent than writing, thus you can reduce response latency by placing read data sources in strategic geolocations for better performance.</p>
+
+
+                <strong>Drawbacks</strong>
+
+                <p>Ensuring data consistency requires special consideration in terms of Service Level Agreements (see the CAP theorem).</p>
+
+                <p>Using a large number of databases means more points of failure, thus companies need to have comprehensive monitoring and fail-safety mechanisms in place to provide adequate operation</p>
+
+
+            </div>
+
+        </div>
+        <div class="a4-15-footer" data-url="footer.html">
+        </div>
+    </section>
+    <!-- PAGE END -->
+
+
+    <!-- PAGE 1 -->
+    <section class="sheet padding-10mm">
+        <div class="a4-15-header" data-url="header.html">
+        </div>
+        <div class="a4-15-content">
+
+            <div class="w100">
+                <h2>Circuit breaker design pattern(Open/Closed/Half-open)</h2>
+
+                <p>The circuit breaker pattern can prevent a caller service from retrying a call to another service (callee) when the call has previously caused repeated timeouts or failures. The pattern is also used to detect when the callee service is functional again.</p>
+
+                <p>This pattern is inspired by the electrical circuit breaker, which automatically opens the circuit if the current flow exceeds a certain threshold. This prevents the circuit from overheating and causing a fire.</p>
+
+                <p>In a microservices architecture, it works the same way, monitors the health of a microservice and automatically blocks requests from that service if it becomes unhealthy.</p>
+
+                <p><img src="img/circuit-breaker.webp" class="p1-2"></p>
+
+                <strong>Benefits</strong>
+                <p>Provides both fast magnetic response to short circuits and slower thermal response to overloads</p>
+                <strong>Drawbacks</strong>
+                <p> More complex and slightly more costly than single-mechanism breakers.</p>
+
+
+            </div>
+
+
+        </div>
+        <div class="a4-15-footer" data-url="footer.html">
+        </div>
+    </section>
+    <!-- PAGE END -->
+
+    <!-- PAGE 1 -->
+    <section class="sheet padding-10mm">
+        <div class="a4-15-header" data-url="header.html">
+        </div>
+        <div class="a4-15-content">
+
+            <div class="w100">
+                <h2>Aggregator design pattern</h2>
+
+                <p>An aggregator design pattern is used to collect pieces of data from various microservices and returns an aggregate for processing. Although similar to the backend-for-frontend (BFF) design pattern, an aggregator is more generic and not explicitly used for UI.</p>
+
+                <p>To complete tasks, the aggregator pattern receives a request and sends out requests to multiple services, based on the tasks it was assigned. Once every service has answered the requests, this design pattern combines the results and initiates a response to the original request.</p>
+
+                <p></p>
+
+                <p><img src="img/aggregator.png" class="p1-2"></p>
+
+                <strong>Benefits</strong>
+                <p>Scalability of both the x-axis and z-axis</p>
+                <p>Tunneling microservices, Microservices signature flexibility to Internal Services</p>
+                <strong>Drawbacks</strong>
+                <p>Complexity to orchestrate data</p>
+                <p>Bottleneck anti-pattern</p>
+                <p>Latency in communication between microservices</p>
+
+
+            </div>
+
+
+        </div>
+        <div class="a4-15-footer" data-url="footer.html">
+        </div>
+    </section>
+    <!-- PAGE END -->
+
+
+
+    <!-- PAGE 1 -->
+    <section class="sheet padding-10mm">
+        <div class="a4-15-header" data-url="header.html">
+        </div>
+        <div class="a4-15-content">
+
+            <div class="w100">
+                <h2>Strangler</h2>
+
+                <p>Developers mostly use the strangler design pattern to incrementally transform a monolith application to microservices. This is accomplished by replacing old functionality with a new service — and, consequently, this is how the pattern receives its name. Once the new service is ready to be executed, the old service is “strangled” so the new one can take over.</p>
+
+                <p>To accomplish this successful transfer from monolith to microservices, a facade interface is used by developers that allows them to expose individual services and functions. The targeted functions are broken free from the monolith so they can be “strangled” and replaced.</p>
+
+                <p>To fully understand this specific pattern, it’s helpful to understand how monolith applications differ from microservices.</p>
+
+                <h2>Decomposition patterns</h2>
+
+                <p>Decomposition design patterns are used to break a monolithic application into smaller, more manageable microservices. A developer can achieve this in one of three ways:</p>
+
+                <p>Decomposition by business capability</p>
+                <p>Decomposition by subdomain</p>
+                <p>Decomposition by transaction</p>
+
+                <p>It facilitates the division of labor and the sharing of knowledge. Using it, multiple people (or teams) with special knowledge can work productively together on an application.</p>
+
+            </div>
+
+
+        </div>
+        <div class="a4-15-footer" data-url="footer.html">
+        </div>
+    </section>
+    <!-- PAGE END -->
+
+</div>
+
+</body>
+<script>
+    window.addEventListener("load", function () {
+        fetchHtmlToDataUrl(document.getElementsByTagName('body')[0]);
+        performPrintPreviewWindow("doc-print-action", "doc-print-content");
+    });
+</script>
+</html>
